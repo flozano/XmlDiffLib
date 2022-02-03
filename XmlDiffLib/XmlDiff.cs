@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.XPath;
 using System.Text.RegularExpressions;
 using System.IO;
+//Some fancy superfluous and unecessary and most possible wrong comment
 
 namespace XmlDiffLib
 {
