@@ -1,0 +1,55 @@
+name: Build and Publish
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'v*.*.*'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required for Nerdbank.GitVersioning to read tags
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore
+        run: dotnet restore XmlDiffLib.sln
+
+      - name: Build
+        run: dotnet build XmlDiffLib.sln -c Release --no-restore
+
+      - name: Test
+        run: dotnet test XmlDiffLib.Tests/XmlDiffLib.Tests.csproj -c Release --no-build --logger trx
+
+      - name: Pack
+        run: dotnet pack XmlDiffLib/XmlDiffLib.csproj -c Release -o ./artifacts --no-build
+
+      - name: Publish artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: artifacts/*.nupkg
+
+      - name: Publish to NuGet
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "NUGET_API_KEY secret is not set. Skipping publish."
+            exit 0
+          fi
+          for package in artifacts/*.nupkg; do
+            dotnet nuget push "$package" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json
+          done
