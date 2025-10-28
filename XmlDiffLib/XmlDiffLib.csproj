@@ -2,6 +2,32 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>XmlDiffLib</AssemblyName>
+    <RootNamespace>XmlDiffLib</RootNamespace>
+
+    <PackageId>Flozano.XmlDiff</PackageId>
+    <Authors>Flozano</Authors>
+    <Company>Flozano</Company>
+    <Description>Utilities for comparing XML documents and reporting attribute-level differences.</Description>
+    <PackageTags>xml diff compare xmldiff</PackageTags>
+    <RepositoryUrl>https://github.com/flozano/XmlDiffLib</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/flozano/XmlDiffLib</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>License.md</PackageLicenseFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../README.md" Pack="true" PackagePath="\" />
+    <None Include="../License.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" PrivateAssets="all" />
+  </ItemGroup>
 
 </Project>
